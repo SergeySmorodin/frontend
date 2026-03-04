@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -85,6 +87,7 @@ const Register = () => {
       navigate('/login', { state: { message: 'Регистрация успешна! Теперь вы можете войти.' } })
     } else {
       setServerError(result.error)
+      console.error('Ошибка регистрации:', result.error)
     }
   }
 
@@ -93,8 +96,15 @@ const Register = () => {
       <h2>Регистрация</h2>
       
       {serverError && (
-        <div className="error-message" style={{ marginBottom: '15px' }}>
-          {serverError}
+        <div className="error-message" style={{ 
+          marginBottom: '15px', 
+          padding: '10px', 
+          backgroundColor: '#f8d7da', 
+          border: '1px solid #f5c6cb',
+          borderRadius: '4px',
+          whiteSpace: 'pre-line'
+        }}>
+          <strong>Ошибка:</strong> {serverError}
         </div>
       )}
 
@@ -108,6 +118,7 @@ const Register = () => {
             value={formData.login}
             onChange={handleChange}
             placeholder="Введите логин"
+            required
           />
           {errors.login && <div className="error-message">{errors.login}</div>}
         </div>
@@ -121,6 +132,7 @@ const Register = () => {
             value={formData.fullName}
             onChange={handleChange}
             placeholder="Введите полное имя"
+            required
           />
           {errors.fullName && <div className="error-message">{errors.fullName}</div>}
         </div>
@@ -134,6 +146,7 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
             placeholder="Введите email"
+            required
           />
           {errors.email && <div className="error-message">{errors.email}</div>}
         </div>
@@ -147,6 +160,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             placeholder="Введите пароль"
+            required
           />
           {errors.password && <div className="error-message">{errors.password}</div>}
         </div>
@@ -160,6 +174,7 @@ const Register = () => {
             value={formData.confirmPassword}
             onChange={handleChange}
             placeholder="Подтвердите пароль"
+            required
           />
           {errors.confirmPassword && <div className="error-message">{errors.confirmPassword}</div>}
         </div>
