@@ -25,6 +25,55 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get('/api/accounts/users/me/')
+      setUser(response.data)
+    } catch (error) {
+      localStorage.removeItem('token')
+      delete axios.defaults.headers.common['Authorization']
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const login = async (login, password) => {
+    try {
+      console.log('Данные для входа:', { login, password })
+      
+      const data = {
+        username: login,
+        password: password
+      }
+      
+      const response = await axios.post('/api/accounts/users/login/', data)
+      
+      const { token, user } = response.data
+      localStorage.setItem('token', token)
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      setUser(user)
+      return { success: true }
+    } catch (error) {
+      let errorMessage = 'Ошибка входа'
+      if (error.response?.data) {
+        // Форматируем сообщение об ошибке
+        if (typeof error.response.data === 'string') {
+          errorMessage = error.response.data
+        } else if (error.response.data.detail) {
+          errorMessage = error.response.data.detail
+        } else if (error.response.data.non_field_errors) {
+          errorMessage = error.response.data.non_field_errors.join(', ')
+        } else {
+          errorMessage = JSON.stringify(error.response.data)
+        }
+      }
+      
+      return { 
+        success: false, 
+        error: errorMessage 
+      }
+    }
+  }
 
   const register = async (userData) => {
     try {
@@ -59,9 +108,18 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const logout = () => {
+    localStorage.removeItem('token')
+    delete axios.defaults.headers.common['Authorization']
+    setUser(null)
+  }
+
   const value = {
     user,
+    loading,
+    login,
     register,
+    logout,
     isAuthenticated: !!user,
     isAdmin: user?.isAdmin || false
   }
