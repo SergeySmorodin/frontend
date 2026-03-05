@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Form = ({ 
+const RegistrationForm = ({ 
   onSubmit, 
   children, 
   title, 
@@ -56,4 +56,4 @@ const Form = ({
   )
 }
 
-export default Form
+export default RegistrationForm

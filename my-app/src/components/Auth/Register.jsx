@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { validateRegistrationForm, validateField } from '../../utils/validation'
-import Form from '../common/Form'
+import RegistrationForm from '../common/RegistrationForm'
 import InputField from '../common/InputField'
 
 const Register = () => {
@@ -65,7 +65,7 @@ const Register = () => {
 
   return (
     <>
-      <Form
+      <RegistrationForm
         onSubmit={handleSubmit}
         title="Регистрация"
         error={serverError}
@@ -134,7 +134,7 @@ const Register = () => {
           required
           autoComplete="new-password"
         />
-      </Form>
+      </RegistrationForm>
 
       <div style={{ marginTop: '15px', textAlign: 'center' }}>
         Уже есть аккаунт? <Link to="/login">Войти</Link>
