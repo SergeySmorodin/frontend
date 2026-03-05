@@ -13,31 +13,24 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true) // Добавляем состояние загрузки
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Функция для проверки токена и загрузки пользователя
     const loadUserFromToken = async () => {
       const token = localStorage.getItem('token')
-      console.log('Loading user from token:', token ? 'Token exists' : 'No token')
-      
       if (!token) {
         setLoading(false)
         return
       }
 
       try {
-        // Устанавливаем токен в заголовки axios
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        
-        // Запрашиваем данные пользователя
+        // Эндпоинт для получения текущего пользователя
         const response = await axios.get('/api/accounts/users/me/')
         console.log('User loaded:', response.data)
-        
         setUser(response.data)
       } catch (error) {
         console.error('Failed to load user:', error)
-        // Если токен невалидный, удаляем его
         localStorage.removeItem('token')
         delete axios.defaults.headers.common['Authorization']
       } finally {
@@ -46,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     loadUserFromToken()
-  }, []) // Пустой массив зависимостей - выполняется только при монтировании
+  }, [])
 
   const login = async (login, password) => {
     try {
@@ -61,12 +54,8 @@ export const AuthProvider = ({ children }) => {
       
       const { token, user } = response.data
       
-      // Сохраняем токен в localStorage
       localStorage.setItem('token', token)
-      
-      // Устанавливаем токен в заголовки axios
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      
       setUser(user)
       return { success: true }
     } catch (error) {
@@ -89,8 +78,6 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      console.log('Registration data:', userData)
-      
       const data = {
         username: userData.login,
         full_name: userData.fullName,
@@ -100,12 +87,8 @@ export const AuthProvider = ({ children }) => {
       }
       
       const response = await axios.post('/api/accounts/users/register/', data)
-      console.log('Registration response:', response.data)
-      
       return { success: true, data: response.data }
     } catch (error) {
-      console.error('Registration error:', error)
-      
       let errorMessage = 'Ошибка регистрации'
       if (error.response?.data) {
         const errorData = error.response.data
@@ -134,7 +117,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = () => {
-    console.log('Logging out')
     localStorage.removeItem('token')
     delete axios.defaults.headers.common['Authorization']
     setUser(null)
@@ -147,7 +129,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     isAuthenticated: !!user,
-    isAdmin: user?.isAdmin || user?.is_admin || false
+    isAdmin: user?.is_admin || false
   }
 
   return (

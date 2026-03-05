@@ -31,7 +31,7 @@ const Navbar = () => {
                 Мои файлы
               </Link>
               <span className="navbar-user">
-                {user?.fullName} ({user?.login})
+                {user?.username}
               </span>
               <button onClick={handleLogout} className="btn">
                 Выход

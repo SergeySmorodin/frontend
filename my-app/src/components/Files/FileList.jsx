@@ -21,11 +21,11 @@ const FileList = ({ files, onFileAction, formatDate, formatFileSize }) => {
       <tbody>
         {files.map(file => (
           <tr key={file.id}>
-            <td>{file.fileName || file.name}</td>
+            <td>{file.original_name}</td>
             <td>{file.comment || '-'}</td>
             <td>{formatFileSize(file.size)}</td>
-            <td>{formatDate(file.uploadDate || file.created_at)}</td>
-            <td>{formatDate(file.lastDownloadDate || file.last_download)}</td>
+            <td>{formatDate(file.upload_date)}</td>
+            <td>{formatDate(file.last_download)}</td>
             <td>
               <FileActions 
                 file={file}
