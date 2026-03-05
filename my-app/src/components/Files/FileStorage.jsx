@@ -112,7 +112,7 @@ const FileStorage = () => {
     <div className="card">
       <h2>
         Управление файлами
-        {!userId && <span> пользователя {user?.fullName}</span>}
+        {!userId && <span> пользователя {user?.full_name}</span>}
       </h2>
 
       {error && (
