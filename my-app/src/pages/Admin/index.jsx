@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import axios from '../../api/axios'
+import UserManagementHeader from '../../components/Admin/UserManagement/UserManagementHeader'
+import UserManagementTable from '../../components/Admin/UserManagement/UserManagementTable'
+import UserManagementError from '../../components/common/ErrorMessage'
+import UserManagementLoader from '../../components/Admin/UserManagement/UserManagementLoader'
 
 const UserManagement = () => {
   const { user, isAdmin } = useAuth()
   const navigate = useNavigate()
+  
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+  // Проверка прав доступа
   useEffect(() => {
     if (!isAdmin) {
       navigate('/')
@@ -20,10 +26,10 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('/api/admin/users')
+      const response = await axios.get('/api/accounts/users')
       setUsers(response.data)
       setError('')
-    } catch (error) {
+    } catch {
       setError('Ошибка загрузки пользователей')
     } finally {
       setLoading(false)
@@ -32,14 +38,14 @@ const UserManagement = () => {
 
   const handleToggleAdmin = async (userId, currentStatus) => {
     try {
-      await axios.patch(`/api/admin/users/${userId}/toggle-admin`, {
+      await axios.patch(`/api/accounts/users/${userId}/toggle-admin`, {
         isAdmin: !currentStatus
       })
-      // Обновляем список пользователей
-      setUsers(users.map(u => 
+      // Оптимистичное обновление интерфейса
+      setUsers(prev => prev.map(u => 
         u.id === userId ? { ...u, isAdmin: !currentStatus } : u
       ))
-    } catch (error) {
+    } catch {
       setError('Ошибка изменения прав администратора')
     }
   }
@@ -50,85 +56,38 @@ const UserManagement = () => {
     }
 
     try {
-      await axios.delete(`/api/admin/users/${userId}`)
-      setUsers(users.filter(u => u.id !== userId))
-    } catch (error) {
+      await axios.delete(`/api/accounts/users/${userId}`)
+      setUsers(prev => prev.filter(u => u.id !== userId))
+    } catch {
       setError('Ошибка удаления пользователя')
     }
   }
 
-  const formatFileSize = (bytes) => {
-    if (bytes === 0) return '0 B'
-    const k = 1024
-    const sizes = ['B', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
-
+  // Состояния рендера
   if (loading) {
-    return <div className="card">Загрузка...</div>
+    return <UserManagementLoader />
   }
 
   return (
     <div className="card">
-      <h2>Управление пользователями</h2>
+      <UserManagementHeader 
+        title="Управление пользователями" 
+        count={users.length} 
+      />
       
       {error && (
-        <div className="error-message" style={{ marginBottom: '15px' }}>
-          {error}
-        </div>
+        <UserManagementError 
+          message={error} 
+          onRetry={fetchUsers} 
+        />
       )}
 
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Логин</th>
-            <th>Полное имя</th>
-            <th>Email</th>
-            <th>Администратор</th>
-            <th>Файлы</th>
-            <th>Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(u => (
-            <tr key={u.id}>
-              <td>{u.login}</td>
-              <td>{u.fullName}</td>
-              <td>{u.email}</td>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={u.isAdmin}
-                  onChange={() => handleToggleAdmin(u.id, u.isAdmin)}
-                  disabled={u.id === user?.id} // Нельзя изменить свои права
-                />
-              </td>
-              <td>
-                {u.storageInfo && (
-                  <>
-                    <div>Файлов: {u.storageInfo.fileCount}</div>
-                    <div>Размер: {formatFileSize(u.storageInfo.totalSize)}</div>
-                    <Link to={`/storage/${u.id}`} className="btn btn-success">
-                      Управлять
-                    </Link>
-                  </>
-                )}
-              </td>
-              <td>
-                {u.id !== user?.id && (
-                  <button
-                    onClick={() => handleDeleteUser(u.id)}
-                    className="btn btn-danger"
-                  >
-                    Удалить
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <UserManagementTable
+        users={users}
+        currentUser={user}
+        onToggleAdmin={handleToggleAdmin}
+        onDelete={handleDeleteUser}
+      />
     </div>
   )
 }

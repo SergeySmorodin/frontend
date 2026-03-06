@@ -55,7 +55,8 @@ export const AuthProvider = ({ children }) => {
       const { token, user } = response.data
       
       localStorage.setItem('token', token)
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+      axios.defaults.headers.common['Authorization'] = `Token ${token}`
       setUser(user)
       return { success: true }
     } catch (error) {
@@ -129,7 +130,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     isAuthenticated: !!user,
-    isAdmin: user?.is_admin || false
+    isAdmin: user?.isAdmin || false
   }
 
   return (
