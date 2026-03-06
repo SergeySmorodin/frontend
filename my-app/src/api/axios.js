@@ -25,7 +25,7 @@ instance.interceptors.request.use(
     // Добавляем токен из localStorage при каждом запросе
     const token = localStorage.getItem('token')
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Token ${token}`
     }
     
     // Добавляем CSRF токен для всех не-GET запросов

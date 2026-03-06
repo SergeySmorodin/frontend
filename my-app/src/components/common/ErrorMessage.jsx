@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const ErrorMessage = ({ message, onDismiss, autoHide = false }) => {
   if (!message) return null

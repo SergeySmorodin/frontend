@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        axios.defaults.headers.common['Authorization'] = `Token ${token}`
         // Эндпоинт для получения текущего пользователя
         const response = await axios.get('/api/accounts/users/me/')
         console.log('User loaded:', response.data)
