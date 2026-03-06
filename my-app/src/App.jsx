@@ -1,34 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import Layout from './components/Layout/Layout'
+import Register from './components/Auth/Register'
+import Login from './components/Auth/Login'
+import UserManagement from './components/Admin/UserManagement'
+import FileStorage from './components/Files/FileStorage'
+import Home from './components/Home/Home'
+import SharedFile from './components/Files/SharedFile'
+import AppInitializer from './components/common/AppInitializer'
+
+
+function AppContent() {
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin/users" element={<UserManagement />} />
+        <Route path="/storage/:userId?" element={<FileStorage />} />
+        <Route path="/api/storage/share/:shareToken/" element={<SharedFile />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Layout>
+  )
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <AuthProvider>
+      <Router>
+        <AppInitializer>
+          <AppContent />
+        </AppInitializer>
+      </Router>
+    </AuthProvider>
   )
 }
 
