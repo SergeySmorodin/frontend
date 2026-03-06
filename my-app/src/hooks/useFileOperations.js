@@ -137,8 +137,8 @@ export const useFileOperations = (fetchFiles) => {
   
     try {
       console.log('Создана ссылка на файл:', file.id)
-      
-      const response = await axios.post(`/api/storage/${file.id}/share/`)
+  
+        const response = await axios.post(`/api/storage/${file.id}/share/`)
       console.log('Share link response:', response.data)
       
       // Предполагаем, что сервер возвращает токен в поле share_token

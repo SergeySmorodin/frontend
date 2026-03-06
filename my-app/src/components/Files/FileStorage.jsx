@@ -74,13 +74,15 @@ const FileStorage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetUserId, isAdmin, navigate, user?.id])
 
-  const handleFileAction = (action, file) => {
-    switch(action) {
-      case 'download':
-        handleDownload(file)
-        break
+  const handleFileAction = (actionId, file) => {
+    console.log('Action:', actionId, 'File:', file)
+    
+    switch(actionId) {
       case 'view':
         handleView(file)
+        break
+      case 'download':
+        handleDownload(file)
         break
       case 'rename':
         handleRename(file)
@@ -95,7 +97,7 @@ const FileStorage = () => {
         handleDelete(file)
         break
       default:
-        break
+        console.log('Неизвестное действие:', actionId)
     }
   }
 
