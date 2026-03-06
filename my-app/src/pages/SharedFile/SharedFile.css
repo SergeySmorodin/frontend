@@ -1,0 +1,37 @@
+.shared-file-card {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+  }
+  
+  .shared-file-icon {
+    font-size: 64px;
+    margin-bottom: 15px;
+    user-select: none;
+  }
+  
+  .shared-file-name {
+    margin: 0 0 10px 0;
+    word-break: break-all;
+  }
+  
+  .shared-file-meta {
+    color: #666;
+    margin: 0;
+  }
+  
+  .shared-file-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .shared-file-warning {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #888;
+    line-height: 1.4;
+  }
+  

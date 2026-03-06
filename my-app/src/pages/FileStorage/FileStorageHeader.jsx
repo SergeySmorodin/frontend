@@ -1,5 +1,5 @@
 import React from 'react'
-import ErrorMessage from '../common/ErrorMessage'
+import ErrorMessage from '../../components/common/ErrorMessage'
 
 const FileStorageHeader = ({ 
   userName, 

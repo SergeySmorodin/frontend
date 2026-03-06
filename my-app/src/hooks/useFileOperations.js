@@ -141,13 +141,11 @@ export const useFileOperations = (fetchFiles) => {
         const response = await axios.post(`/api/storage/${file.id}/share/`)
       console.log('Share link response:', response.data)
       
-      // Предполагаем, что сервер возвращает токен в поле share_token
       const shareToken = response.data.share_token || response.data.token
       const shareLink = `${window.location.origin}/api/storage/share/${shareToken}/`
       
       await navigator.clipboard.writeText(shareLink)
       
-      // Спрашиваем, открыть ли ссылку сейчас
       if (window.confirm('Ссылка скопирована в буфер обмена! Открыть её в новой вкладке?')) {
         window.open(shareLink, '_blank')
       }
