@@ -1,118 +1,163 @@
 import { useState } from 'react'
 import axios from '../api/axios'
+import {
+  getContentTypeFromFileName, 
+  isImageFile, 
+  isPdfFile  
+} from '../utils/fileHelpers'
 
 export const useFileOperations = (fetchFiles) => {
   const [error, setError] = useState('')
 
   // Удаление файла
-  const handleDelete = async (fileId) => {
+  const handleDelete = async (file) => {
+    if (!file || !file.id) {
+      return
+    }
+
     if (!window.confirm('Вы уверены, что хотите удалить файл?')) {
       return
     }
 
     try {
-      await axios.delete(`/api/storage/${fileId}/`)
+      await axios.delete(`/api/storage/${file.id}/`)
       fetchFiles()
     } catch (error) {
-      console.error('Delete error:', error)
       setError(error.response?.data?.detail || 'Ошибка удаления файла')
     }
   }
 
-// Переименование файла
-const handleRename = async (fileId, currentName) => {
-    // Получаем расширение файла из текущего имени
-    const fileExtension = currentName.split('.').pop()
-    const fileNameWithoutExt = currentName.substring(0, currentName.lastIndexOf('.')) || currentName
-    
+  // Переименование файла
+  const handleRename = async (file) => {
+    if (!file || !file.id) {
+      return
+    }
+  
+    // Получаем расширение из текущего имени файла
+    const currentName = file.original_name
+    const lastDotIndex = currentName.lastIndexOf('.')
+    const currentExtension = lastDotIndex > 0 ? currentName.substring(lastDotIndex + 1) : ''
+    const fileNameWithoutExt = lastDotIndex > 0 ? currentName.substring(0, lastDotIndex) : currentName
+  
+    // Запрашиваем новое имя
     const newFileName = prompt(
-      'Введите новое имя файла (расширение будет добавлено автоматически):', 
+      `Введите новое имя файла (расширение .${currentExtension} будет добавлено автоматически):`,
       fileNameWithoutExt
     )
     
     if (!newFileName || newFileName === fileNameWithoutExt) return
   
-    // Добавляем расширение файла
+    // Добавляем расширение, если его нет
     const finalFileName = newFileName.includes('.') 
       ? newFileName 
-      : `${newFileName}.${fileExtension}`
-
+      : `${newFileName}.${currentExtension}`
+  
     try {
       const formData = new FormData()
       formData.append('original_name', finalFileName)
       
-      const response = await axios.patch(`/api/storage/${fileId}/`, formData, {
+      await axios.patch(`/api/storage/${file.id}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       })
+      
       fetchFiles()
+      
     } catch (error) {
       setError(error.response?.data?.detail || 'Ошибка переименования файла')
     }
   }
 
   // Скачивание файла
-  const handleDownload = async (fileId, fileName) => {
+  const handleDownload = async (file) => {
+    if (!file || !file.id) {
+      return
+    }
+
     try {
-      const response = await axios.get(`/api/storage/${fileId}/download/`, {
+      const response = await axios.get(`/api/storage/${file.id}/download/`, {
         responseType: 'blob'
       })
       
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', fileName)
+      link.setAttribute('download', file.original_name)
       document.body.appendChild(link)
       link.click()
       link.remove()
       
       fetchFiles()
     } catch (error) {
-      console.error('Download error:', error)
       setError(error.response?.data?.detail || 'Ошибка скачивания файла')
     }
   }
 
-  // Просмотр файла
-  const handleView = async (fileId) => {
+  // Просмотр файла в браузере
+  const handleView = async (file) => {
+    if (!file || !file.id) {
+      return
+    }
+  
     try {
-      const response = await axios.get(`/api/storage/${fileId}/view/`, {
+      const response = await axios.get(`/api/storage/${file.id}/view/`, {
         responseType: 'blob'
       })
       
-      const url = window.URL.createObjectURL(new Blob([response.data]))
-      window.open(url, '_blank')
+      const contentType = response.headers['content-type'] || 
+                         getContentTypeFromFileName(file.original_name)
+      
+      const blob = new Blob([response.data], { type: contentType })
+      const url = window.URL.createObjectURL(blob)
+      
+      if (isPdfFile(file.original_name) || isImageFile(file.original_name)) {
+        // Для PDF и изображений открываем в браузере
+        window.open(url, '_blank')
+      } else {
+        // Для остальных файлов скачиваем
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', file.original_name)
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+      }
     } catch (error) {
-      console.error('View error:', error)
       setError(error.response?.data?.detail || 'Ошибка просмотра файла')
     }
   }
 
-  // Создание ссылки
-  const handleCreateShareLink = async (fileId) => {
+  // Создание ссылки для доступа
+  const handleCreateShareLink = async (file) => {
+    if (!file || !file.id) {
+      return
+    }
+
     try {
-      const response = await axios.post(`/api/storage/${fileId}/share/`)
-      const shareLink = `${window.location.origin}/api/storage/share/${response.data.share_link}/`
+      const response = await axios.post(`/api/storage/${file.id}/share/`)
+      const shareLink = `${window.location.origin}/api/storage/share/${response.data.share_token}/`
       await navigator.clipboard.writeText(shareLink)
       alert('Ссылка скопирована в буфер обмена!')
     } catch (error) {
-      console.error('Share link error:', error)
       setError(error.response?.data?.detail || 'Ошибка создания ссылки')
     }
   }
 
-  // Удаление ссылки
-  const handleRevokeShareLink = async (fileId) => {
+  // Удаление ссылки для доступа
+  const handleRevokeShareLink = async (file) => {
+    if (!file || !file.id) {
+      return
+    }
+
     if (!window.confirm('Вы уверены, что хотите удалить ссылку для доступа?')) {
       return
     }
 
     try {
-      await axios.delete(`/api/storage/${fileId}/revoke_share/`)
+      await axios.delete(`/api/storage/${file.id}/revoke_share/`)
       alert('Ссылка удалена')
     } catch (error) {
-      console.error('Revoke share error:', error)
       setError(error.response?.data?.detail || 'Ошибка удаления ссылки')
     }
   }
