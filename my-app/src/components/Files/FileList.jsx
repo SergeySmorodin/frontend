@@ -20,20 +20,20 @@ const FileList = ({ files, onFileAction, formatDate, formatFileSize }) => {
       </thead>
       <tbody>
         {files.map(file => (
-          <tr key={file.id}>
-            <td>{file.original_name}</td>
-            <td>{file.comment || '-'}</td>
-            <td>{formatFileSize(file.size)}</td>
-            <td>{formatDate(file.upload_date)}</td>
-            <td>{formatDate(file.last_download)}</td>
-            <td>
-              <FileActions 
-                file={file}
-                onFileAction={onFileAction}
-              />
-            </td>
-          </tr>
-        ))}
+            <tr key={file.id}>
+              <td>{file.original_name}</td>
+              <td>{file.comment || '-'}</td>
+              <td>{formatFileSize(file.size)}</td>
+              <td>{formatDate(file.upload_date)}</td>
+              <td>{formatDate(file.last_download)}</td>
+              <td>
+                <FileActions 
+                  file={file}
+                  onFileAction={onFileAction}
+                />
+              </td>
+            </tr>
+          ))}
       </tbody>
     </table>
   )
