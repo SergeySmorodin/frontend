@@ -131,15 +131,29 @@ export const useFileOperations = (fetchFiles) => {
   // Создание ссылки для доступа
   const handleCreateShareLink = async (file) => {
     if (!file || !file.id) {
+      console.error('Отсутствует файл для создания ссылки')
       return
     }
-
+  
     try {
+      console.log('Создана ссылка на файл:', file.id)
+      
       const response = await axios.post(`/api/storage/${file.id}/share/`)
-      const shareLink = `${window.location.origin}/api/storage/share/${response.data.share_token}/`
+      console.log('Share link response:', response.data)
+      
+      // Предполагаем, что сервер возвращает токен в поле share_token
+      const shareToken = response.data.share_token || response.data.token
+      const shareLink = `${window.location.origin}/api/storage/share/${shareToken}/`
+      
       await navigator.clipboard.writeText(shareLink)
-      alert('Ссылка скопирована в буфер обмена!')
+      
+      // Спрашиваем, открыть ли ссылку сейчас
+      if (window.confirm('Ссылка скопирована в буфер обмена! Открыть её в новой вкладке?')) {
+        window.open(shareLink, '_blank')
+      }
+      
     } catch (error) {
+      console.error('Ошибка создания ссылки:', error)
       setError(error.response?.data?.detail || 'Ошибка создания ссылки')
     }
   }
@@ -147,17 +161,25 @@ export const useFileOperations = (fetchFiles) => {
   // Удаление ссылки для доступа
   const handleRevokeShareLink = async (file) => {
     if (!file || !file.id) {
+      console.error('Нет файла для отмены ссылки')
       return
     }
-
-    if (!window.confirm('Вы уверены, что хотите удалить ссылку для доступа?')) {
+  
+    if (!window.confirm('Вы уверены, что хотите удалить ссылку для общего доступа?')) {
       return
     }
-
+  
     try {
+      console.log('Отмена расшаренной ссылки:', file.id)
+      
       await axios.delete(`/api/storage/${file.id}/revoke_share/`)
       alert('Ссылка удалена')
+      
+      // Обновляем список файлов, чтобы убрать признак расшаренного файла
+      fetchFiles()
+      
     } catch (error) {
+      console.error('Ошибка при отмене расшаривания:', error)
       setError(error.response?.data?.detail || 'Ошибка удаления ссылки')
     }
   }

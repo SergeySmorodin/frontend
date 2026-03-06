@@ -15,25 +15,33 @@ const FileList = ({ files, onFileAction, formatDate, formatFileSize }) => {
           <th>Размер</th>
           <th>Дата загрузки</th>
           <th>Последнее скачивание</th>
+          <th>Статус</th>
           <th>Действия</th>
         </tr>
       </thead>
       <tbody>
         {files.map(file => (
-            <tr key={file.id}>
-              <td>{file.original_name}</td>
-              <td>{file.comment || '-'}</td>
-              <td>{formatFileSize(file.size)}</td>
-              <td>{formatDate(file.upload_date)}</td>
-              <td>{formatDate(file.last_download)}</td>
-              <td>
-                <FileActions 
-                  file={file}
-                  onFileAction={onFileAction}
-                />
-              </td>
-            </tr>
-          ))}
+          <tr key={file.id}>
+            <td>{file.original_name}</td>
+            <td>{file.comment || '-'}</td>
+            <td>{formatFileSize(file.size)}</td>
+            <td>{formatDate(file.upload_date)}</td>
+            <td>{formatDate(file.last_download)}</td>
+            <td>
+              {file.share_token ? (
+                <span style={{ color: 'green', fontWeight: 'bold' }}>🔗 share</span>
+              ) : (
+                <span style={{ color: 'gray' }}>not share</span>
+              )}
+            </td>
+            <td>
+              <FileActions 
+                file={file}
+                onFileAction={onFileAction}
+              />
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   )

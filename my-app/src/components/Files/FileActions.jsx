@@ -1,44 +1,72 @@
 import React from 'react'
 
 const ACTIONS_CONFIG = [
-  { id: 'view', icon: '👁️', title: 'Просмотреть', className: 'btn' },
-  { id: 'download', icon: '⬇️', title: 'Скачать', className: 'btn' },
-  { id: 'rename', icon: '✏️', title: 'Переименовать', className: 'btn' },
-  { id: 'share', icon: '🔗', title: 'Создать ссылку', className: 'btn' },
-  { id: 'revoke', icon: '🔒', title: 'Удалить ссылку', className: 'btn' },
-  { id: 'delete', icon: '🗑️', title: 'Удалить', className: 'btn btn-danger', confirm: true },
+  { 
+    id: 'view', icon: '👁️', title: 'Просмотреть', className: 'btn', show: () => true
+  },
+  { 
+    id: 'download', icon: '⬇️', title: 'Скачать', className: 'btn', show: () => true
+  },
+  { 
+    id: 'rename', icon: '✏️', title: 'Переименовать', className: 'btn', show: () => true
+  },
+  { 
+    id: 'share', 
+    icon: (file) => file?.share_token ? '🔄' : '🔗',
+    title: (file) => file?.share_token ? 'Обновить ссылку' : 'Создать ссылку',
+    className: 'btn',
+    show: () => true
+  },
+  { 
+    id: 'revoke', icon: '🔒', title: 'Удалить ссылку', className: 'btn',
+    show: (file) => !!file?.share_token,
+    confirm: true,
+    confirmMessage: 'Вы уверены, что хотите удалить ссылку для общего доступа?'
+  },
+  { 
+    id: 'delete', icon: '🗑️', title: 'Удалить', className: 'btn btn-danger',
+    show: () => true,
+    confirm: true,
+    confirmMessage: 'Вы уверены, что хотите удалить файл? Это действие нельзя отменить.'
+  },
 ]
 
 const FileActions = React.memo(({ file, onFileAction }) => {
   
-  const handleClick = (actionId) => {
-    // Базовая валидация
-    if (!file?.id) return
-
-    // Подтверждение для опасных действий
-    const action = ACTIONS_CONFIG.find(a => a.id === actionId)
-    if (action?.confirm && !window.confirm('Вы уверены, что хотите выполнить это действие?')) {
+  const handleClick = (action) => {
+    if (!file?.id) {
+      console.error('Отсутствует файл для действия')
       return
     }
 
-    onFileAction(actionId, file)
+    if (action.confirm) {
+      const message = action.confirmMessage || 'Вы уверены?'
+      if (!window.confirm(message)) {
+        return
+      }
+    }
+
+    onFileAction(action.id, file)
   }
 
   return (
-    <>
-      {ACTIONS_CONFIG.map((action) => (
-        <button
-          key={action.id}
-          onClick={() => handleClick(action.id)}
-          className={action.className}
-          title={action.title}
-          aria-label={action.title}
-          type="button"
-        >
-          {action.icon}
-        </button>
+    <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+      {ACTIONS_CONFIG
+        .filter(action => action.show(file))
+        .map((action) => (
+          <button
+            key={action.id}
+            onClick={() => handleClick(action)}
+            className={action.className}
+            title={typeof action.title === 'function' ? action.title(file) : action.title}
+            aria-label={typeof action.title === 'function' ? action.title(file) : action.title}
+            type="button"
+            style={{ margin: '2px' }}
+          >
+            {typeof action.icon === 'function' ? action.icon(file) : action.icon}
+          </button>
       ))}
-    </>
+    </div>
   )
 })
 
