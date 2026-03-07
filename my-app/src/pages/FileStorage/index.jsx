@@ -20,9 +20,14 @@ const FileStorage = () => {
 
   const targetUserId = userId || user?.id
 
+
   const fetchFiles = async () => {
     try {
-      const response = await axios.get('/api/storage/')
+      const url = (targetUserId && targetUserId !== user?.id)
+        ? `/api/storage/?user_id=${targetUserId}`
+        : '/api/storage/'
+      
+      const response = await axios.get(url)
       setFiles(response.data)
       setError('')
     } catch (error) {
