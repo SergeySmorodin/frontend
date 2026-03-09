@@ -1,4 +1,5 @@
 import React from 'react'
+import './RegistrationForm.css'
 
 const RegistrationForm = ({ 
   onSubmit, 
@@ -11,31 +12,17 @@ const RegistrationForm = ({
   loading = false 
 }) => {
   return (
-    <div className="card" style={{ maxWidth: '400px', margin: '0 auto' }}>
-      {title && <h2>{title}</h2>}
+    <div className="card registration-form-card">
+      {title && <h2 className="registration-form-title">{title}</h2>}
       
       {successMessage && (
-        <div style={{ 
-          color: '#28a745', 
-          marginBottom: '15px',
-          padding: '10px',
-          backgroundColor: '#d4edda',
-          border: '1px solid #c3e6cb',
-          borderRadius: '4px'
-        }}>
+        <div className="registration-form-success">
           {successMessage}
         </div>
       )}
 
       {error && (
-        <div className="error-message" style={{ 
-          marginBottom: '15px', 
-          padding: '10px', 
-          backgroundColor: '#f8d7da', 
-          border: '1px solid #f5c6cb',
-          borderRadius: '4px',
-          whiteSpace: 'pre-line'
-        }}>
+        <div className="registration-form-error">
           <strong>Ошибка:</strong> {error}
         </div>
       )}
@@ -45,8 +32,7 @@ const RegistrationForm = ({
         
         <button 
           type="submit" 
-          className={`btn ${submitClassName}`} 
-          style={{ width: '100%' }}
+          className={`btn ${submitClassName} registration-form-submit`} 
           disabled={loading}
         >
           {loading ? 'Загрузка...' : submitText}

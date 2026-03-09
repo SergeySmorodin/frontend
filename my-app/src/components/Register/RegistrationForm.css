@@ -1,0 +1,42 @@
+.registration-form-card {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .registration-form-title {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .registration-form-success {
+    color: #28a745;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+  }
+  
+  .registration-form-error {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    white-space: pre-line;
+  }
+  
+  .registration-form-error strong {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .registration-form-submit {
+    width: 100%;
+    margin-top: 15px;
+  }
+  
+  .registration-form-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }

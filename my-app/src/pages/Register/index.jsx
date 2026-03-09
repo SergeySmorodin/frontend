@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { validateRegistrationForm, validateField } from '../../utils/validation'
-import RegistrationForm from '../../components/common/RegistrationForm'
+import RegistrationForm from '../../components/Register/RegistrationForm'
 import InputField from '../../components/common/InputField'
 
 const Register = () => {
