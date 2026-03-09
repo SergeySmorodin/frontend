@@ -1,5 +1,6 @@
 import React from 'react'
 import { isImageFile, isPdfFile } from '../../utils/fileHelpers'
+import './SharedFile.css'
 
 const SharedFileActions = ({ 
   fileName, 
@@ -10,22 +11,20 @@ const SharedFileActions = ({
   const showPreview = isPdfFile(fileName) || isImageFile(fileName)
   
   return (
-    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+    <div className="shared-file-actions">
       <button 
-        className="btn btn-primary" 
+        className="shared-file-btn shared-file-btn-primary" 
         onClick={onDownload}
         disabled={disabled}
-        style={{ padding: '10px 25px', fontSize: '16px' }}
       >
         {disabled ? 'Загрузка...' : '⬇️ Скачать файл'}
       </button>
       
       {showPreview && (
         <button 
-          className="btn" 
+          className="shared-file-btn shared-file-btn-secondary" 
           onClick={onPreview}
           disabled={disabled}
-          style={{ padding: '10px 25px', fontSize: '16px' }}
         >
           👁️ Открыть
         </button>
@@ -35,3 +34,4 @@ const SharedFileActions = ({
 }
 
 export default SharedFileActions
+

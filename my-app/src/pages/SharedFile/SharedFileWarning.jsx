@@ -1,13 +1,8 @@
 import React from 'react'
+import './SharedFile.css'
 
 const SharedFileWarning = () => (
-  <p style={{ 
-    textAlign: 'center', 
-    marginTop: '20px', 
-    fontSize: '14px', 
-    color: '#888',
-    lineHeight: '1.4'
-  }}>
+  <p className="shared-file-warning">
     Файл предоставлен пользователем.<br />
     Будьте осторожны с загрузкой неизвестных файлов.
   </p>

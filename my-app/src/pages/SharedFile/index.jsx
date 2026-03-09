@@ -8,6 +8,7 @@ import SharedFileWarning from './SharedFileWarning'
 import SharedFileLoader from './SharedFileLoader'
 import SharedFileError from './SharedFileError'
 import SharedFileMessage from './SharedFileMessage'
+import './SharedFile.css'
 
 const SharedFile = () => {
   const { shareToken } = useParams()
@@ -98,7 +99,7 @@ const SharedFile = () => {
   if (fileInfo) {
     return (
       <div className="container">
-        <div className="card" style={{ maxWidth: '500px', margin: '50px auto', padding: '30px' }}>
+        <div className="shared-file-card">
           
           <SharedFileHeader
             fileName={fileInfo.original_name}

@@ -1,37 +1,146 @@
+/* Контейнер страницы */
+.shared-file-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Карточка файла */
 .shared-file-card {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 30px;
-  }
-  
-  .shared-file-icon {
-    font-size: 64px;
-    margin-bottom: 15px;
-    user-select: none;
-  }
-  
-  .shared-file-name {
-    margin: 0 0 10px 0;
-    word-break: break-all;
-  }
-  
-  .shared-file-meta {
-    color: #666;
-    margin: 0;
-  }
-  
-  .shared-file-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .shared-file-warning {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #888;
-    line-height: 1.4;
-  }
-  
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+}
+
+/* Состояния карточки */
+.shared-file-card--error {
+  text-align: center;
+  padding: 50px 30px;
+}
+
+/* Заголовки ошибок */
+.shared-file-error-title {
+  color: #dc3545;
+  margin: 0 0 10px 0;
+}
+
+.shared-file-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Иконка и Заголовок */
+.shared-file-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.shared-file-icon {
+  font-size: 64px;
+  margin-bottom: 15px;
+  user-select: none;
+}
+
+.shared-file-name {
+  margin: 0 0 10px 0;
+  word-break: break-all;
+  font-size: 1.25rem;
+}
+
+.shared-file-meta {
+  color: #666;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Кнопки */
+.shared-file-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.shared-file-btn {
+  padding: 10px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.shared-file-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.shared-file-btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.shared-file-btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Предупреждение */
+.shared-file-warning {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #888;
+  line-height: 1.4;
+}
+
+/* Ошибка */
+.shared-file-error {
+  text-align: center;
+  padding: 50px;
+}
+
+.shared-file-error-title {
+  color: #dc3545;
+  margin-bottom: 20px;
+}
+
+/* Загрузчик */
+.shared-file-loader {
+  text-align: center;
+  padding: 50px;
+}
+
+/* Alert */
+.shared-file-alert {
+  padding: 10px 15px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  color: #721c24;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.shared-file-alert-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0 4px;
+  color: #721c24;
+  opacity: 0.7;
+}
+
+.shared-file-alert-close:hover {
+  opacity: 1;
+}
+
+.navbar {
+  display: none;
+}

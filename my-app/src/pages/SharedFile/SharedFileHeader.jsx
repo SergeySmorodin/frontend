@@ -1,19 +1,20 @@
 import React from 'react'
 import { getFileIcon } from '../../utils/fileHelpers'
 import { formatFileSize, formatDate } from '../../utils/formatters'
+import './SharedFile.css'
 
 const SharedFileHeader = ({ fileName, fileSize, fileDate }) => {
   const icon = getFileIcon(fileName)
   
   return (
-    <div style={{ textAlign: 'center', marginBottom: '25px' }}>
-      <div style={{ fontSize: '64px', marginBottom: '15px', userSelect: 'none' }}>
+    <div className="shared-file-header">
+      <div className="shared-file-icon">
         {icon}
       </div>
-      <h3 style={{ margin: '0 0 10px 0', wordBreak: 'break-all' }}>
+      <h3 className="shared-file-name">
         {fileName}
       </h3>
-      <p style={{ color: '#666', margin: 0 }}>
+      <p className="shared-file-meta">
         {formatFileSize(fileSize)} • {formatDate(fileDate)}
       </p>
     </div>

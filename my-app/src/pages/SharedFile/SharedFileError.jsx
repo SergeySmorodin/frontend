@@ -1,11 +1,12 @@
 import React from 'react'
+import './SharedFile.css'
 
 const SharedFileError = ({ message, onReturnHome }) => (
-  <div className="container">
-    <div className="card" style={{ textAlign: 'center', padding: '50px' }}>
-      <h2 style={{ color: '#dc3545' }}>Ошибка доступа</h2>
+  <div className="shared-file-container">
+    <div className="shared-file-card shared-file-error">
+      <h2 className="shared-file-error-title">Ошибка доступа</h2>
       <p>{message}</p>
-      <button className="btn" onClick={onReturnHome}>
+      <button className="shared-file-btn shared-file-btn-secondary" onClick={onReturnHome}>
         На главную
       </button>
     </div>
