@@ -5,13 +5,6 @@
   padding: 0 15px;
 }
 
-/* Карточка файла */
-.shared-file-card {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 30px;
-}
-
 /* Состояния карточки */
 .shared-file-card--error {
   text-align: center;
