@@ -1,5 +1,6 @@
 import React from 'react'
-import ErrorMessage from '../../components/common/ErrorMessage'
+import ErrorMessage from '../common/ErrorMessage'
+import './FileStorageHeader.css'
 
 const FileStorageHeader = ({ 
   userName, 
@@ -8,7 +9,7 @@ const FileStorageHeader = ({
   onClearError 
 }) => {
   return (
-    <>
+    <div className="file-storage-header">
       <h2>
         Управление файлами
         {!isCurrentUser && userName && (
@@ -21,7 +22,7 @@ const FileStorageHeader = ({
         onDismiss={onClearError} 
         autoHide={true}
       />
-    </>
+    </div>
   )
 }
 

@@ -1,9 +1,14 @@
 import React from 'react'
 import FileActions from './FileActions'
+import './FileList.css'
 
 const FileList = ({ files, onFileAction, formatDate, formatFileSize }) => {
   if (files.length === 0) {
-    return <p>Файлы не найдены</p>
+    return (
+      <div className="file-list-empty">
+        <p>Файлы не найдены</p>
+      </div>
+    )
   }
 
   return (
@@ -29,9 +34,9 @@ const FileList = ({ files, onFileAction, formatDate, formatFileSize }) => {
             <td>{formatDate(file.last_download)}</td>
             <td>
               {file.share_token ? (
-                <span style={{ color: 'green', fontWeight: 'bold' }}>🔗 share</span>
+                <span className="file-list-status-shared">🔗 share</span>
               ) : (
-                <span style={{ color: 'gray' }}>not share</span>
+                <span className="file-list-status-not-shared">not share</span>
               )}
             </td>
             <td>

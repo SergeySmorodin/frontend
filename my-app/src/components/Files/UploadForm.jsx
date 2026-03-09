@@ -1,4 +1,5 @@
 import React from 'react'
+import './UploadForm.css'
 
 const UploadForm = ({
   onSubmit,
@@ -12,11 +13,8 @@ const UploadForm = ({
   formatFileSize
 }) => {
   return (
-    <form onSubmit={onSubmit} style={{ marginBottom: '30px' }}>
-      <h3>Загрузить новый файл</h3>
-      
+    <form onSubmit={onSubmit} className="upload-form">
       <div className="form-group">
-        <label htmlFor="file">Выберите файл</label>
         <input
           type="file"
           id="file"
@@ -24,27 +22,16 @@ const UploadForm = ({
           disabled={uploading}
         />
         {selectedFile && (
-          <div style={{ 
-            marginTop: '5px', 
-            padding: '5px', 
-            backgroundColor: '#e9ecef',
-            borderRadius: '4px',
-            fontSize: '12px'
-          }}>
-            <strong>Выбран файл:</strong> {selectedFile.name} 
-            ({formatFileSize(selectedFile.size)})
+          <div className="upload-form-file-info">
+            <span>
+              <strong>Выбран файл:</strong> {selectedFile.name} 
+              ({formatFileSize(selectedFile.size)})
+            </span>
             <button 
               type="button" 
               onClick={onClearSelected}
-              style={{ 
-                marginLeft: '10px',
-                padding: '2px 5px',
-                backgroundColor: '#dc3545',
-                color: 'white',
-                border: 'none',
-                borderRadius: '3px',
-                cursor: 'pointer'
-              }}
+              className="upload-form-clear-btn"
+              aria-label="Очистить выбранный файл"
             >
               ✕
             </button>
@@ -66,7 +53,7 @@ const UploadForm = ({
 
       <button 
         type="submit" 
-        className="btn btn-success"
+        className="btn btn-success upload-form-submit-btn"
         disabled={uploading || !selectedFile}
       >
         {uploading ? 'Загрузка...' : 'Загрузить'}

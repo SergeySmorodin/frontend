@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { formatFileSize } from '../../../utils/formatters'
+import './UserManagement.css';
 
 const UserStorageInfo = ({ storageInfo, userId }) => {
-  if (!storageInfo) return <span>—</span>
+  if (!storageInfo) return <span>—</span>;
   
   return (
     <>
@@ -11,8 +12,7 @@ const UserStorageInfo = ({ storageInfo, userId }) => {
       <div>Размер: {formatFileSize(storageInfo.total_size)}</div>
       <Link 
         to={`/storage/${userId}`} 
-        className="btn btn-success btn-sm" 
-        style={{ marginTop: '5px' }}
+        className="btn btn-success btn-sm user-storage-link"
       >
         Управлять
       </Link>

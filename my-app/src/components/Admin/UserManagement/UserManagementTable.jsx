@@ -1,5 +1,6 @@
 import React from 'react'
 import UserTableRow from './UserTableRow'
+import './UserManagement.css';
 
 const UserManagementTable = ({ 
   users, 
@@ -9,9 +10,9 @@ const UserManagementTable = ({
 }) => {
   if (!users?.length) {
     return (
-      <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
+      <span className="user-manager-table">
         <p>Пользователи не найдены</p>
-      </div>
+      </span>
     )
   }
 

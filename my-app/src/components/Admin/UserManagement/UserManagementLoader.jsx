@@ -1,11 +1,10 @@
 import React from 'react'
+import './UserManagement.css';
 
 const UserManagementLoader = () => (
-  <div className="card">
-    <div style={{ textAlign: 'center', padding: '50px' }}>
+  <div className="user-management-loader">
       <h2>Загрузка...</h2>
       <p>Получение списка пользователей</p>
-    </div>
   </div>
 )
 

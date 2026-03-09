@@ -7,7 +7,7 @@ import { formatDate, formatFileSize } from '../../utils/formatters'
 import UploadForm from '../../components/Files/UploadForm'
 import FileList from '../../components/Files/FileList'
 import axios from '../../api/axios'
-import FileStorageHeader from './FileStorageHeader'
+import FileStorageHeader from '../../components/Files/FileStorageHeader'
 
 const FileStorage = () => {
   const { userId } = useParams()

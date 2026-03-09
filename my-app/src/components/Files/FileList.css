@@ -1,0 +1,15 @@
+.file-list-status-shared {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .file-list-status-not-shared {
+    color: gray;
+  }
+  
+  .file-list-empty {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+  }
+  

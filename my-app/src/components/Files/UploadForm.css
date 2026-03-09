@@ -1,0 +1,38 @@
+.upload-form {
+    margin-bottom: 30px;
+  }
+  
+  .upload-form-title {
+    margin-bottom: 20px;
+  }
+  
+  .upload-form-file-info {
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .upload-form-clear-btn {
+    margin-left: 10px;
+    padding: 2px 5px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: opacity 0.2s;
+  }
+  
+  .upload-form-clear-btn:hover {
+    opacity: 0.8;
+  }
+  
+  .upload-form-submit-btn {
+    margin-top: 15px;
+  }
+  

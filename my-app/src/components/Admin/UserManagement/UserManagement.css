@@ -1,0 +1,44 @@
+.user-management-badge {
+    background-color: #6c757d;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: white;
+  }
+  
+  /* Заглушка "нет данных" */
+  .user-management-empty {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .user-management-loader {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  /* Ссылка управления хранилищем */
+  .user-storage-link {
+    margin-top: 5px;
+  }
+  
+  /* Статус "—" для текущего пользователя */
+  .user-actions-placeholder {
+    color: #6c757d;
+  }
+  
+  /* Чекбокс админа */
+  .user-admin-toggle {
+    cursor: pointer;
+  }
+  
+  .user-admin-toggle:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .user-manager-table {
+    text-align: center;
+    padding: 30px;
+  }
+  

@@ -1,7 +1,8 @@
 import React from 'react'
+import './UserManagement.css';
 
 const UserActions = ({ userId, isCurrentUser, onDelete }) => {
-  if (isCurrentUser) return <span style={{ color: '#6c757d' }}>—</span>
+  if (isCurrentUser) return <span className="user-actions-placeholder">—</span>;
   
   return (
     <button

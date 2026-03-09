@@ -39,11 +39,11 @@ const UserManagement = () => {
   const handleToggleAdmin = async (userId, currentStatus) => {
     try {
       await axios.patch(`/api/accounts/users/${userId}/toggle-admin`, {
-        isAdmin: !currentStatus
+        is_admin: !currentStatus
       })
-      // Оптимистичное обновление интерфейса
+      // Обновляем интерфейс после запроса
       setUsers(prev => prev.map(u => 
-        u.id === userId ? { ...u, isAdmin: !currentStatus } : u
+        u.id === userId ? { ...u, is_admin: !currentStatus } : u
       ))
     } catch {
       setError('Ошибка изменения прав администратора')

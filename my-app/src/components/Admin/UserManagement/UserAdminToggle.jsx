@@ -1,6 +1,13 @@
 import React from 'react'
+import './UserManagement.css';
 
-const UserAdminToggle = ({ userId, isChecked, onChange, isCurrentUser, disabled }) => (
+const UserAdminToggle = ({ 
+  userId, 
+  isChecked, 
+  onChange, 
+  isCurrentUser, 
+  disabled
+}) => (
   <input
     type="checkbox"
     checked={isChecked}
@@ -8,7 +15,9 @@ const UserAdminToggle = ({ userId, isChecked, onChange, isCurrentUser, disabled 
     disabled={disabled || isCurrentUser}
     title={isCurrentUser ? 'Нельзя изменить свои права' : ''}
     aria-label={`Переключить роль администратора для пользователя ${userId}`}
-    style={{ cursor: (disabled || isCurrentUser) ? 'not-allowed' : 'pointer' }}
+    style={{ 
+      cursor: (disabled || isCurrentUser) ? 'not-allowed' : 'pointer'
+    }}
   />
 )
 
