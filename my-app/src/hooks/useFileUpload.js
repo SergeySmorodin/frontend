@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import axios from '../api/axios'
+import { useAuth } from '../context/AuthContext'
 import { formatFileSize } from '../utils/formatters'
 
-export const useFileUpload = (fetchFiles) => {
+export const useFileUpload = (fetchFiles, targetUserId = null) => {
+  const { user: currentUser } = useAuth()
+  
   const [uploading, setUploading] = useState(false)
   const [comment, setComment] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
@@ -47,6 +50,11 @@ export const useFileUpload = (fetchFiles) => {
     formData.append('comment', comment)
     formData.append('original_name', selectedFile.name)
     
+    // добавляем user_id в FormData для привязки файла к другому пользователю
+    if (currentUser?.is_admin && targetUserId) {
+      formData.append('user', targetUserId)
+    }
+    
     try {
       await axios.post('/api/storage/', formData, {
         headers: {
@@ -70,6 +78,10 @@ export const useFileUpload = (fetchFiles) => {
           errorMessage = error.response.data.detail
         } else if (error.response.data.message) {
           errorMessage = error.response.data.message
+        } else if (error.response.data.user) {
+          errorMessage = Array.isArray(error.response.data.user) 
+            ? error.response.data.user.join(', ') 
+            : error.response.data.user
         } else {
           errorMessage = JSON.stringify(error.response.data)
         }

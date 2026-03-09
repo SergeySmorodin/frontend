@@ -57,7 +57,7 @@ const FileStorage = () => {
     handleFileSelect,
     handleClearSelected,
     handleUpload
-  } = useFileUpload(fetchFiles, formatFileSize)
+  } = useFileUpload(fetchFiles, targetUserId)
 
   useEffect(() => {
     if (opError) setError(opError)
