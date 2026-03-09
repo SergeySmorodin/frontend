@@ -8,7 +8,7 @@ const UserTableRow = ({ user, currentUser, onToggleAdmin, onDelete }) => {
   
   return (
     <tr>
-      <td>{user.login}</td>
+      <td>{user.username}</td>
       <td>{user.fullName}</td>
       <td>{user.email}</td>
       <td>

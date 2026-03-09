@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = {
         username: userData.login,
-        full_name: userData.fullName,
+        fullName: userData.fullName,
         email: userData.email,
         password: userData.password,
         password2: userData.password
