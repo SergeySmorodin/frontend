@@ -81,10 +81,10 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = {
         username: userData.login,
-        fullName: userData.fullName,
+        full_name: userData.full_name,
         email: userData.email,
         password: userData.password,
-        password2: userData.password
+        password2: userData.password2
       }
       
       const response = await axios.post('/api/accounts/users/register/', data)
@@ -130,7 +130,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     isAuthenticated: !!user,
-    isAdmin: user?.isAdmin || false
+    isAdmin: user?.is_admin || false
   }
 
   return (

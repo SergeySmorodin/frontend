@@ -7,9 +7,13 @@ const UserStorageInfo = ({ storageInfo, userId }) => {
   
   return (
     <>
-      <div>Файлов: {storageInfo.fileCount}</div>
-      <div>Размер: {formatFileSize(storageInfo.totalSize)}</div>
-      <Link to={`/storage/${userId}`} className="btn btn-success btn-sm" style={{ marginTop: '5px' }}>
+      <div>Файлов: {storageInfo.file_count}</div>
+      <div>Размер: {formatFileSize(storageInfo.total_size)}</div>
+      <Link 
+        to={`/storage/${userId}`} 
+        className="btn btn-success btn-sm" 
+        style={{ marginTop: '5px' }}
+      >
         Управлять
       </Link>
     </>

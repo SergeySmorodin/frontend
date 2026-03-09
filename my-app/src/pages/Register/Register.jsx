@@ -50,7 +50,15 @@ const Register = () => {
     }
 
     setLoading(true)
-    const { confirmPassword, ...registrationData } = formData
+    
+    const registrationData = {
+      login: formData.login,
+      full_name: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+      password2: formData.confirmPassword
+    }
+    
     const result = await register(registrationData)
 
     if (result.success) {

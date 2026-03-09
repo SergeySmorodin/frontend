@@ -9,19 +9,19 @@ const UserTableRow = ({ user, currentUser, onToggleAdmin, onDelete }) => {
   return (
     <tr>
       <td>{user.username}</td>
-      <td>{user.fullName}</td>
+      <td>{user.full_name}</td>
       <td>{user.email}</td>
       <td>
         <UserAdminToggle
           userId={user.id}
-          isChecked={user.isAdmin}
+          isChecked={user.is_admin}
           isCurrentUser={isCurrentUser}
-          onChange={() => onToggleAdmin(user.id, user.isAdmin)}
+          onChange={() => onToggleAdmin(user.id, user.is_admin)}
         />
       </td>
       <td>
         <UserStorageInfo 
-          storageInfo={user.storageInfo} 
+          storageInfo={user.storage_info} 
           userId={user.id} 
         />
       </td>
