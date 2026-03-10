@@ -5,15 +5,19 @@ import './FileStorageHeader.css'
 const FileStorageHeader = ({ 
   userName, 
   isCurrentUser, 
+  isAdminView,
   error, 
   onClearError 
 }) => {
   return (
     <div className="file-storage-header">
       <h2>
-        Управление файлами
-        {!isCurrentUser && userName && (
-          <span> пользователя {userName}</span>
+        {isAdminView 
+          ? 'Управление файлами пользователей' 
+          : 'Управление файлами'
+        }
+        {!isAdminView && userName && !isCurrentUser && (
+          <span className="owner-name"> пользователя {userName}</span>
         )}
       </h2>
       

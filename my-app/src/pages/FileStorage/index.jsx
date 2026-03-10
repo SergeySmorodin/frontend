@@ -20,7 +20,6 @@ const FileStorage = () => {
 
   const targetUserId = userId || user?.id
 
-
   const fetchFiles = async () => {
     try {
       const url = (targetUserId && targetUserId !== user?.id)
@@ -30,8 +29,8 @@ const FileStorage = () => {
       const response = await axios.get(url)
       setFiles(response.data)
       setError('')
-    } catch (error) {
-      setError(error.response?.data?.detail || 'Ошибка загрузки файлов')
+    } catch (err) {
+      setError(err.userMessage || err.response?.data?.detail || 'Ошибка загрузки файлов')
     } finally {
       setLoading(false)
     }
@@ -79,30 +78,29 @@ const FileStorage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetUserId, isAdmin, navigate, user?.id])
 
+  let ownerName = user?.full_name;
+
+  if (userId && userId !== user?.id) {
+    // Если смотрим чужие файлы
+    if (files.length > 0 && files[0].owner) {
+      ownerName = files[0].owner.full_name;
+    } else if (files.length === 0) {
+      // Заглушка если нет файлов
+      ownerName = `Пользователь #${userId}`; 
+    }
+  }
+
   const handleFileAction = (actionId, file) => {
     console.log('Action:', actionId, 'File:', file)
     
     switch(actionId) {
-      case 'view':
-        handleView(file)
-        break
-      case 'download':
-        handleDownload(file)
-        break
-      case 'rename':
-        handleRename(file)
-        break
-      case 'share':
-        handleCreateShareLink(file)
-        break
-      case 'revoke':
-        handleRevokeShareLink(file)
-        break
-      case 'delete':
-        handleDelete(file)
-        break
-      default:
-        console.log('Неизвестное действие:', actionId)
+      case 'view': handleView(file); break;
+      case 'download': handleDownload(file); break;
+      case 'rename': handleRename(file); break;
+      case 'share': handleCreateShareLink(file); break;
+      case 'revoke': handleRevokeShareLink(file); break;
+      case 'delete': handleDelete(file); break;
+      default: console.log('Неизвестное действие:', actionId);
     }
   }
 
@@ -113,8 +111,10 @@ const FileStorage = () => {
   return (
     <div className="card">
       <FileStorageHeader
-        userName={user?.full_name}
-        isCurrentUser={!userId}
+        userName={ownerName}
+        // общий список
+        isAdminView={isAdmin && !userId}
+        isCurrentUser={!userId || userId === user?.id}
         error={error}
         onClearError={() => setError('')}
       />
