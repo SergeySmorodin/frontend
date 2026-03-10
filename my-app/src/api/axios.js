@@ -3,11 +3,14 @@ import axios from 'axios'
 // Функция для получения CSRF токена из куки
 function getCsrfToken() {
   const name = 'csrftoken'
-  const cookieValue = document.cookie
+
+  if (!document.cookie) return null
+  
+  const csrfCookie = document.cookie
     .split('; ')
-    .find(row => row.startsWith(name + '='))
-    ?.split('=')[1]
-  return cookieValue
+    .find(row => row.startsWith(`${name}=`))
+  
+  return csrfCookie ? csrfCookie.split('=')[1] : null
 }
 
 const instance = axios.create({
@@ -19,47 +22,72 @@ const instance = axios.create({
   withCredentials: true,
 })
 
-// Интерцептор для добавления токена и CSRF
+// Интерцептор запроса
 instance.interceptors.request.use(
   (config) => {
-    // Добавляем токен из localStorage при каждом запросе
+    // Добавляем токен авторизации
     const token = localStorage.getItem('token')
     if (token) {
       config.headers.Authorization = `Token ${token}`
     }
     
-    // Добавляем CSRF токен для всех не-GET запросов
-    if (config.method !== 'get') {
+    // Добавляем CSRF токен только для методов, изменяющих данные
+    const safeMethods = ['get', 'head', 'options']
+    if (!safeMethods.includes(config.method?.toLowerCase())) {
       const csrfToken = getCsrfToken()
       if (csrfToken) {
         config.headers['X-CSRFToken'] = csrfToken
       }
     }
     
-    console.log(`📤 ${config.method.toUpperCase()} ${config.url}`, config.data || '')
     return config
   },
   (error) => {
-    console.error('❌ Request error:', error)
     return Promise.reject(error)
   }
 )
 
-// Интерцептор для обработки ответов
+// Интерцептор ответа
 instance.interceptors.response.use(
   (response) => {
-    console.log(`✅ ${response.status} ${response.config.url}`, response.data)
     return response
   },
   (error) => {
-    console.error(`❌ ${error.response?.status} ${error.config?.url}`, error.response?.data)
-    
-    // Если получили 401 (Unauthorized), очищаем токен
-    if (error.response?.status === 401) {
-      console.log('Unauthorized, clearing token')
-      localStorage.removeItem('token')
+
+    // Сервер НЕ ответил
+    if (!error.response) {
+      error.isNetworkError = true
+      error.userMessage = 'Ошибка подключения к серверу. Проверьте интернет-соединение или попробуйте позже.'
+    } 
+    // Сервер ответил, но с ошибкой (4xx, 5xx)
+    else {
+      error.isNetworkError = false
+      const status = error.response.status
+      
+      switch (status) {
+        case 401:
+          error.userMessage = 'Неверный логин или пароль'
+          localStorage.removeItem('token')
+          break
+        case 403:
+          error.userMessage = 'Доступ запрещён'
+          break
+        case 404:
+          error.userMessage = 'Ресурс не найден'
+          break
+        case 500:
+        case 502:
+        case 503:
+        case 504:
+          error.userMessage = 'Ошибка сервера. Попробуйте немного позже.'
+          break
+        default:
+          // Берем сообщение от бэкенда, иначе дефолтное
+          const backendMsg = error.response.data?.detail || error.response.data?.message || error.response.data?.non_field_errors
+          error.userMessage = backendMsg || `Произошла ошибка (код ${status})`
+      }
     }
-    
+
     return Promise.reject(error)
   }
 )
