@@ -5,6 +5,7 @@ import RegistrationForm from '../../components/Register/RegistrationForm'
 import InputField from '../../components/common/InputField'
 import './Login.css'
 
+
 const Login = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -30,12 +31,19 @@ const Login = () => {
     setError('')
     setLoading(true)
   
-    const result = await login(formData.login, formData.password)
-    
-    if (result.success) {
-      navigate('/')
-    } else {
-      setError(result.error)
+    try {
+      const result = await login(formData.login, formData.password)
+      
+      if (result.success) {
+        navigate('/')
+      } else {
+        // Если контекст возвращает объект с ошибкой
+        setError(result.error) 
+      }
+    } catch (err) {
+      // Если login выбрасывает ошибку напрямую
+      setError(err.userMessage || 'Произошла неизвестная ошибка')
+    } finally {
       setLoading(false)
     }
   }

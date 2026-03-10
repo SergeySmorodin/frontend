@@ -21,6 +21,7 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    if (serverError) setServerError('')
     
     setFormData(prev => ({
       ...prev,

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import axios from '../api/axios'
+import getErrorMessage from '../utils/errorMessage'
 
 const AuthContext = createContext(null)
 
@@ -43,34 +44,29 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (login, password) => {
     try {
-      console.log('Login attempt:', { login, password })
-      
       const response = await axios.post('/api/accounts/users/login/', {
         username: login,
         password: password
       })
       
-      console.log('Login response:', response.data)
-      
       const { token, user } = response.data
       
       localStorage.setItem('token', token)
-
       axios.defaults.headers.common['Authorization'] = `Token ${token}`
       setUser(user)
+      
       return { success: true }
+      
     } catch (error) {
       console.error('Login error:', error)
       
-      let errorMessage = 'Ошибка входа'
-      if (error.response?.data) {
-        if (error.response.data.detail) {
-          errorMessage = error.response.data.detail
-        } else if (error.response.data.non_field_errors) {
-          errorMessage = error.response.data.non_field_errors[0]
-        } else {
-          errorMessage = JSON.stringify(error.response.data)
-        }
+      // Сначала берём userMessage из интерцептора
+      const errorMessage = getErrorMessage(error, 'Ошибка входа')
+      
+      // Очищаем токен при 401
+      if (error.response?.status === 401) {
+        localStorage.removeItem('token')
+        delete axios.defaults.headers.common['Authorization']
       }
       
       return { success: false, error: errorMessage }
@@ -89,29 +85,9 @@ export const AuthProvider = ({ children }) => {
       
       const response = await axios.post('/api/accounts/users/register/', data)
       return { success: true, data: response.data }
+      
     } catch (error) {
-      let errorMessage = 'Ошибка регистрации'
-      if (error.response?.data) {
-        const errorData = error.response.data
-        if (typeof errorData === 'string') {
-          errorMessage = errorData
-        } else if (errorData.detail) {
-          errorMessage = errorData.detail
-        } else if (errorData.non_field_errors) {
-          errorMessage = errorData.non_field_errors[0]
-        } else {
-          const fieldErrors = []
-          Object.keys(errorData).forEach(field => {
-            const messages = errorData[field]
-            if (Array.isArray(messages)) {
-              fieldErrors.push(`${field}: ${messages.join(', ')}`)
-            } else {
-              fieldErrors.push(`${field}: ${messages}`)
-            }
-          })
-          errorMessage = fieldErrors.join('\n')
-        }
-      }
+      const errorMessage = getErrorMessage(error, 'Ошибка регистрации')
       
       return { success: false, error: errorMessage }
     }
