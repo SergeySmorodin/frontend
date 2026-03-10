@@ -1,0 +1,37 @@
+.error-message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background-color: #97000d;
+    border-radius: 4px;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .error-message strong {
+    margin-right: 4px;
+  }
+  
+  .error-message-dismiss {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0 4px;
+    color: #ffffff;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  
+  .error-message-dismiss:hover {
+    opacity: 1;
+  }
+  
+  .error-message-dismiss:focus {
+    outline: 2px solid #721c24;
+    outline-offset: 2px;
+  }
+  
