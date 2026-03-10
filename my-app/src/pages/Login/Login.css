@@ -1,0 +1,13 @@
+.login-footer {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.login-footer a {
+  color: #007bff; 
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}

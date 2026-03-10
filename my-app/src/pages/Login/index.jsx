@@ -3,6 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import RegistrationForm from '../../components/Register/RegistrationForm'
 import InputField from '../../components/common/InputField'
+import './Login.css'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -28,7 +29,7 @@ const Login = () => {
     e.preventDefault()
     setError('')
     setLoading(true)
-
+  
     const result = await login(formData.login, formData.password)
     
     if (result.success) {
@@ -74,7 +75,7 @@ const Login = () => {
         />
       </RegistrationForm>
 
-      <div style={{ marginTop: '15px', textAlign: 'center' }}>
+      <div className="login-footer">
         Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
       </div>
     </>

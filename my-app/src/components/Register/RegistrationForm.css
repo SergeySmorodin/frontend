@@ -20,14 +20,13 @@
   .registration-form-error {
     margin-bottom: 15px;
     padding: 10px;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+    background-color: #af1d29;
     border-radius: 4px;
     white-space: pre-line;
   }
   
   .registration-form-error strong {
-    display: block;
+    /* display: block; */
     margin-bottom: 5px;
   }
   
