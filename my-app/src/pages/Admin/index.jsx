@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import axios from '../../api/axios'
 import UserManagementHeader from '../../components/Admin/UserManagement/UserManagementHeader'
 import UserManagementTable from '../../components/Admin/UserManagement/UserManagementTable'
-import UserManagementError from '../../components/common/ErrorMessage'
+import ErrorMessage from '../../components/common/ErrorMessage'
 import UserManagementLoader from '../../components/Admin/UserManagement/UserManagementLoader'
 
 const UserManagement = () => {
@@ -13,9 +13,11 @@ const UserManagement = () => {
   
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  
+  // ошибки: критическая (загрузка) и временная (действия)
+  const [loadError, setLoadError] = useState('')
+  const [actionError, setActionError] = useState('')
 
-  // Проверка прав доступа
   useEffect(() => {
     if (!isAdmin) {
       navigate('/')
@@ -25,28 +27,29 @@ const UserManagement = () => {
   }, [isAdmin, navigate])
 
   const fetchUsers = async () => {
+    setLoading(true)
+    setLoadError('')
     try {
       const response = await axios.get('/api/accounts/users')
       setUsers(response.data)
-      setError('')
-    } catch {
-      setError('Ошибка загрузки пользователей')
+    } catch (err) {
+      setLoadError(err.userMessage || 'Не удалось загрузить список пользователей')
     } finally {
       setLoading(false)
     }
   }
 
   const handleToggleAdmin = async (userId, currentStatus) => {
+    setActionError('')
     try {
       await axios.patch(`/api/accounts/users/${userId}/toggle-admin`, {
         is_admin: !currentStatus
       })
-      // Обновляем интерфейс после запроса
       setUsers(prev => prev.map(u => 
         u.id === userId ? { ...u, is_admin: !currentStatus } : u
       ))
-    } catch {
-      setError('Ошибка изменения прав администратора')
+    } catch (err) {
+      setActionError(err.userMessage || 'Ошибка изменения прав')
     }
   }
 
@@ -54,16 +57,16 @@ const UserManagement = () => {
     if (!window.confirm('Вы уверены, что хотите удалить пользователя?')) {
       return
     }
+    setActionError('')
 
     try {
       await axios.delete(`/api/accounts/users/${userId}`)
       setUsers(prev => prev.filter(u => u.id !== userId))
-    } catch {
-      setError('Ошибка удаления пользователя')
+    } catch (err) {
+      setActionError(err.userMessage || 'Ошибка удаления пользователя')
     }
   }
 
-  // Состояния рендера
   if (loading) {
     return <UserManagementLoader />
   }
@@ -75,21 +78,33 @@ const UserManagement = () => {
         count={users.length} 
       />
       
-      {error && (
-        <UserManagementError 
-          message={error} 
+      {loadError && (
+        <ErrorMessage 
+          message={loadError} 
           onRetry={fetchUsers} 
+          autoHide={false} 
         />
       )}
 
-      <UserManagementTable
-        users={users}
-        currentUser={user}
-        onToggleAdmin={handleToggleAdmin}
-        onDelete={handleDeleteUser}
-      />
+      {actionError && (
+        <ErrorMessage 
+          message={actionError} 
+          onDismiss={() => setActionError('')} 
+          autoHide={false} 
+        />
+      )}
+
+      {!loadError && (
+        <UserManagementTable
+          users={users}
+          currentUser={user}
+          onToggleAdmin={handleToggleAdmin}
+          onDelete={handleDeleteUser}
+        />
+      )}
     </div>
   )
 }
 
 export default UserManagement
+
