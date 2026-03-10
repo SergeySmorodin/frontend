@@ -134,6 +134,7 @@ export const useFileOperations = (fetchFiles) => {
       console.error('Отсутствует файл для создания ссылки')
       return
     }
+    setError('')
   
     try {
       console.log('Создана ссылка на файл:', file.id)
@@ -149,6 +150,7 @@ export const useFileOperations = (fetchFiles) => {
       if (window.confirm('Ссылка скопирована в буфер обмена! Открыть её в новой вкладке?')) {
         window.open(shareLink, '_blank')
       }
+      await fetchFiles()
       
     } catch (error) {
       console.error('Ошибка создания ссылки:', error)
@@ -166,6 +168,7 @@ export const useFileOperations = (fetchFiles) => {
     if (!window.confirm('Вы уверены, что хотите удалить ссылку для общего доступа?')) {
       return
     }
+    setError('')
   
     try {
       console.log('Отмена расшаренной ссылки:', file.id)
@@ -174,7 +177,7 @@ export const useFileOperations = (fetchFiles) => {
       alert('Ссылка удалена')
       
       // Обновляем список файлов, чтобы убрать признак расшаренного файла
-      fetchFiles()
+      await fetchFiles()
       
     } catch (error) {
       console.error('Ошибка при отмене расшаривания:', error)

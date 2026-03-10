@@ -4,10 +4,10 @@ import { useAuth } from '../../context/AuthContext'
 import { useFileOperations } from '../../hooks/useFileOperations'
 import { useFileUpload } from '../../hooks/useFileUpload'
 import { formatDate, formatFileSize } from '../../utils/formatters'
-import UploadForm from '../../components/Files/UploadForm'
-import FileList from '../../components/Files/FileList'
+import UploadForm from '../../components/FilesStorage/UploadForm'
+import FileList from '../../components/FilesStorage/FileList'
+import FileStorageHeader from '../../components/FilesStorage/FileStorageHeader'
 import axios from '../../api/axios'
-import FileStorageHeader from '../../components/Files/FileStorageHeader'
 
 const FileStorage = () => {
   const { userId } = useParams()

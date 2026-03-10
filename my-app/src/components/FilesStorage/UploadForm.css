@@ -36,3 +36,7 @@
     margin-top: 15px;
   }
   
+  .upload-form .form-group input[type="text"] {
+    background-color: inherit;
+  }
+  
