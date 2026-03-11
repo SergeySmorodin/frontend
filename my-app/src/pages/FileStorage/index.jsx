@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useFileOperations } from '../../hooks/useFileOperations'
 import { useFileUpload } from '../../hooks/useFileUpload'
+import { useFileCommentOperations } from '../../hooks/useFileCommentOperation'
 import { formatDate, formatFileSize } from '../../utils/formatters'
 import UploadForm from '../../components/FilesStorage/UploadForm'
 import FileList from '../../components/FilesStorage/FileList'
@@ -38,7 +39,6 @@ const FileStorage = () => {
 
   const { 
     error: opError, 
-    setError: setOpError,
     handleDelete,
     handleRename,
     handleDownload,
@@ -58,10 +58,16 @@ const FileStorage = () => {
     handleUpload
   } = useFileUpload(fetchFiles, targetUserId)
 
-  useEffect(() => {
+  const { 
+    error: commentError, 
+    handleEditComment 
+  } = useFileCommentOperations(fetchFiles)
+
+  useEffect(() => { 
     if (opError) setError(opError)
     if (uploadError) setError(uploadError)
-  }, [opError, uploadError])
+    if (commentError) setError(commentError)
+  }, [opError, uploadError, commentError])
 
   useEffect(() => {
     if (!user) {
@@ -100,6 +106,7 @@ const FileStorage = () => {
       case 'share': handleCreateShareLink(file); break;
       case 'revoke': handleRevokeShareLink(file); break;
       case 'delete': handleDelete(file); break;
+      case 'edit_comment': handleEditComment(file); break;
       default: console.log('Неизвестное действие:', actionId);
     }
   }

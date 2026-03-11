@@ -4,12 +4,21 @@ const ACTIONS_CONFIG = [
   { 
     id: 'view', icon: '👁️', title: 'Просмотреть', className: 'btn', show: () => true
   },
+
   { 
     id: 'download', icon: '⬇️', title: 'Скачать', className: 'btn', show: () => true
   },
+
   { 
     id: 'rename', icon: '✏️', title: 'Переименовать', className: 'btn', show: () => true
   },
+
+  { 
+    id: 'edit_comment', icon: '💬', title: 'Редактировать комментарий', className: 'btn',
+    show: () => true,
+    confirm: true, confirmMessage: 'Изменить комментарий к файлу?'
+  },
+
   { 
     id: 'share', 
     icon: (file) => file?.share_token ? '🔄' : '🔗',
@@ -17,12 +26,14 @@ const ACTIONS_CONFIG = [
     className: 'btn',
     show: () => true
   },
+
   { 
     id: 'revoke', icon: '🔒', title: 'Удалить ссылку', className: 'btn',
     show: (file) => !!file?.share_token,
     confirm: true,
     confirmMessage: 'Вы уверены, что хотите удалить ссылку для общего доступа?'
   },
+  
   { 
     id: 'delete', icon: '🗑️', title: 'Удалить', className: 'btn btn-danger',
     show: () => true,
