@@ -1,15 +1,52 @@
+.file-list-table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.col-name {
+  width: 25%;
+  min-width: 150px;
+  max-width: 300px;
+}
+
+/* Имя фаайла */
+.file-list-cell-ellipsis {
+  white-space: normal; 
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-word; 
+}
+
+.col-comment {
+  width: 30%;
+  min-width: 150px;
+  max-width: 400px;
+}
+
+.file-list-cell-clamp {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-size { width: 10%; min-width: 80px; text-align: right; }
+.col-date { width: 12%; min-width: 100px; }
+.col-download { width: 12%; min-width: 100px; }
+.col-status { width: 10%; min-width: 90px; }
+.col-actions { width: 25%; min-width: 120px; text-align: center; }
+
 .file-list-status-shared {
-    color: green;
-    font-weight: bold;
-  }
-  
-  .file-list-status-not-shared {
-    color: gray;
-  }
-  
-  .file-list-empty {
-    text-align: center;
-    padding: 30px;
-    color: #666;
-  }
-  
+  color: #28a745;
+  font-weight: 600;
+}
+
+.file-list-status-not-shared {
+  color: #6c757d;
+}
+
+.file-list-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+}
