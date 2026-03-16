@@ -1,24 +1,39 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import axios from '../api/axios'
 import { useAuth } from '../context/AuthContext'
 import { formatFileSize } from '../utils/formatters'
+import { validateFile } from '../../utils/validation'
 
 export const useFileUpload = (fetchFiles, targetUserId = null) => {
   const { user: currentUser } = useAuth()
+  const fileInputRef = useRef(null)
   
   const [uploading, setUploading] = useState(false)
   const [comment, setComment] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [error, setError] = useState('')
 
+
   const handleFileSelect = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files?.[0]
+    
     if (file) {
-      console.log('File selected:', {
-        name: file.name,
-        size: formatFileSize(file.size),
-        type: file.type
-      })
+
+      const validationError = validateFile(file)
+      if (validationError) {
+        setError(validationError)
+        setSelectedFile(null)
+        if (fileInputRef.current) fileInputRef.current.value = ''
+        return
+      }
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log('File selected:', {
+          name: file.name,
+          size: formatFileSize(file.size),
+          type: file.type
+        })
+      }
       
       setSelectedFile(file)
       setError('')
@@ -29,14 +44,17 @@ export const useFileUpload = (fetchFiles, targetUserId = null) => {
 
   const handleClearSelected = () => {
     setSelectedFile(null)
-    const fileInput = document.getElementById('file')
-    if (fileInput) {
-      fileInput.value = ''
+    setComment('')
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
     }
+    setError('')
   }
 
   const handleUpload = async (e) => {
     e.preventDefault()
+    
+    setError('')
     
     if (!selectedFile) {
       setError('Выберите файл для загрузки')
@@ -50,7 +68,6 @@ export const useFileUpload = (fetchFiles, targetUserId = null) => {
     formData.append('comment', comment)
     formData.append('original_name', selectedFile.name)
     
-    // добавляем user_id в FormData для привязки файла к другому пользователю
     if (currentUser?.is_admin && targetUserId) {
       formData.append('user', targetUserId)
     }
@@ -62,32 +79,21 @@ export const useFileUpload = (fetchFiles, targetUserId = null) => {
         }
       })
       
-      setSelectedFile(null)
-      setComment('')
-      const fileInput = document.getElementById('file')
-      if (fileInput) fileInput.value = ''
-      
+      // Успешная загрузка — сбрасываем форму
+      handleClearSelected()
       fetchFiles()
       
     } catch (error) {
-      console.error('Upload error:', error.response?.data)
-      
-      let errorMessage = 'Ошибка загрузки файла'
-      if (error.response?.data) {
-        if (error.response.data.detail) {
-          errorMessage = error.response.data.detail
-        } else if (error.response.data.message) {
-          errorMessage = error.response.data.message
-        } else if (error.response.data.user) {
-          errorMessage = Array.isArray(error.response.data.user) 
-            ? error.response.data.user.join(', ') 
-            : error.response.data.user
-        } else {
-          errorMessage = JSON.stringify(error.response.data)
-        }
-      }
+
+      const errorMessage = error.userMessage || 
+                          error.response?.data?.detail || 
+                          'Ошибка загрузки файла'
       
       setError(errorMessage)
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Upload error:', error)
+      }
     } finally {
       setUploading(false)
     }
@@ -101,6 +107,7 @@ export const useFileUpload = (fetchFiles, targetUserId = null) => {
     error,
     handleFileSelect,
     handleClearSelected,
-    handleUpload
+    handleUpload,
+    fileInputRef
   }
 }

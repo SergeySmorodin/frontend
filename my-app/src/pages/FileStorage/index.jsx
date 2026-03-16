@@ -8,8 +8,9 @@ import { formatDate, formatFileSize } from '../../utils/formatters'
 import UploadForm from '../../components/FilesStorage/UploadForm'
 import FileList from '../../components/FilesStorage/FileList'
 import FileStorageHeader from '../../components/FilesStorage/FileStorageHeader'
-import axios from '../../api/axios'
 import ErrorMessage from '../../components/common/ErrorMessage'
+import axios from '../../api/axios'
+
 
 const FileStorage = () => {
   const { userId } = useParams()
@@ -56,7 +57,8 @@ const FileStorage = () => {
     error: uploadError,
     handleFileSelect,
     handleClearSelected,
-    handleUpload
+    handleUpload,
+    fileInputRef
   } = useFileUpload(fetchFiles, targetUserId)
 
   const { 
@@ -146,6 +148,7 @@ const FileStorage = () => {
           uploading={uploading}
           error={uploadError}
           formatFileSize={formatFileSize}
+          fileInputRef={fileInputRef}
         />
 
         <h3>Список файлов</h3>
