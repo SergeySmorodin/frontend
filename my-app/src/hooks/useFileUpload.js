@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import axios from '../api/axios'
 import { useAuth } from '../context/AuthContext'
 import { formatFileSize } from '../utils/formatters'
-import { validateFile } from '../../utils/validation'
+import { validateFile } from '../utils/validation'
 
 export const useFileUpload = (fetchFiles, targetUserId = null) => {
   const { user: currentUser } = useAuth()
