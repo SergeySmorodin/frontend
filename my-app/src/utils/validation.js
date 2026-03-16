@@ -1,3 +1,5 @@
+import { formatFileSize } from './formatters'
+
 export const REGEX = {
   LOGIN: /^[a-zA-Z][a-zA-Z0-9]{3,19}$/,
   EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,

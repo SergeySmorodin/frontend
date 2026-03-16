@@ -27,7 +27,7 @@ export const useFileUpload = (fetchFiles, targetUserId = null) => {
         return
       }
       
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env.DEV) {
         console.log('File selected:', {
           name: file.name,
           size: formatFileSize(file.size),
@@ -91,7 +91,7 @@ export const useFileUpload = (fetchFiles, targetUserId = null) => {
       
       setError(errorMessage)
       
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env.DEV) {
         console.error('Upload error:', error)
       }
     } finally {
