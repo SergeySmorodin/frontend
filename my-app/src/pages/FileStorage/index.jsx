@@ -9,6 +9,7 @@ import UploadForm from '../../components/FilesStorage/UploadForm'
 import FileList from '../../components/FilesStorage/FileList'
 import FileStorageHeader from '../../components/FilesStorage/FileStorageHeader'
 import axios from '../../api/axios'
+import ErrorMessage from '../../components/common/ErrorMessage'
 
 const FileStorage = () => {
   const { userId } = useParams()
@@ -116,38 +117,49 @@ const FileStorage = () => {
   }
 
   return (
-    <div className="card">
-      <FileStorageHeader
-        userName={ownerName}
-        // общий список
-        isAdminView={isAdmin && !userId}
-        isCurrentUser={!userId || userId === user?.id}
-        error={error}
-        onClearError={() => setError('')}
-      />
-
-      <UploadForm
-        onSubmit={handleUpload}
-        onFileSelect={handleFileSelect}
-        onClearSelected={handleClearSelected}
-        comment={comment}
-        onCommentChange={setComment}
-        selectedFile={selectedFile}
-        uploading={uploading}
-        error={uploadError}
-        formatFileSize={formatFileSize}
-      />
-
-      <h3>Список файлов</h3>
+    <div className="file-storage-page">
       
-      <FileList
-        files={files}
-        onFileAction={handleFileAction}
-        formatDate={formatDate}
-        formatFileSize={formatFileSize}
-      />
+      {error && (
+        <ErrorMessage 
+          message={error} 
+          onDismiss={() => setError('')} 
+          autoHide={true} 
+        />
+      )}
+
+      <div className="card">
+        <FileStorageHeader
+          userName={ownerName}
+          isAdminView={isAdmin && !userId}
+          isCurrentUser={!userId || userId === user?.id}
+          error={null} 
+          onClearError={() => setError('')}
+        />
+
+        <UploadForm
+          onSubmit={handleUpload}
+          onFileSelect={handleFileSelect}
+          onClearSelected={handleClearSelected}
+          comment={comment}
+          onCommentChange={setComment}
+          selectedFile={selectedFile}
+          uploading={uploading}
+          error={uploadError}
+          formatFileSize={formatFileSize}
+        />
+
+        <h3>Список файлов</h3>
+        
+        <FileList
+          files={files}
+          onFileAction={handleFileAction}
+          formatDate={formatDate}
+          formatFileSize={formatFileSize}
+        />
+      </div>
     </div>
   )
 }
 
 export default FileStorage
+
