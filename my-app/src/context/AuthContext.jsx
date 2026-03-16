@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import axios from '../api/axios'
-import getErrorMessage from '../utils/errorMessage'
+
 
 const AuthContext = createContext(null)
 
@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
 
       try {
         axios.defaults.headers.common['Authorization'] = `Token ${token}`
-        // Эндпоинт для получения текущего пользователя
         const response = await axios.get('/api/accounts/users/me/')
         console.log('User loaded:', response.data)
         setUser(response.data)
@@ -61,8 +60,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Login error:', error)
       
-      // Сначала берём userMessage из интерцептора
-      const errorMessage = getErrorMessage(error, 'Ошибка входа')
+      // userMessage из интерцептора
+      const errorMessage = error.userMessage || 'Ошибка входа'
       
       // Очищаем токен при 401
       if (error.response?.status === 401) {
@@ -88,7 +87,8 @@ export const AuthProvider = ({ children }) => {
       return { success: true, data: response.data }
       
     } catch (error) {
-      const errorMessage = getErrorMessage(error, 'Ошибка регистрации')
+
+      const errorMessage = error.userMessage || 'Ошибка регистрации'
       
       return { success: false, error: errorMessage }
     }
