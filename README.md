@@ -1,11 +1,14 @@
+# Создать файл .env с содержимым для продакшен зааменить на ip адрес
+```VITE_API_URL=http://localhost:8000```
+
 # Установка зависимостей
-npm install
+```npm install```
 
 # Запуск в режиме разработки
-npm run dev
+```npm run dev```
 
 # Сборка для продакшена
-npm run build
+```npm run build```
 
 # Предпросмотр собранного проекта
-npm run preview
+```npm run preview```

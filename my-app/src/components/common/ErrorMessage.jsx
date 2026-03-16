@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import './ErrorMessage.css'
 
 const ErrorMessage = ({ message, onDismiss, onRetry, autoHide = false }) => {
-  if (!message) return null
 
   useEffect(() => {
     // Автоскрытие работает только если нет кнопки повтора
@@ -11,6 +10,8 @@ const ErrorMessage = ({ message, onDismiss, onRetry, autoHide = false }) => {
       return () => clearTimeout(timer)
     }
   }, [message, autoHide, onDismiss, onRetry])
+
+  if (!message) return null
 
   return (
     <div className="error-message" role="alert">

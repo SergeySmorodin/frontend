@@ -9,7 +9,6 @@ const UploadForm = ({
   onCommentChange,
   selectedFile,
   uploading,
-  error,
   formatFileSize
 }) => {
   return (

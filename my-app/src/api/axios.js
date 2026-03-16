@@ -53,7 +53,6 @@ instance.interceptors.response.use(
     return response
   },
   (error) => {
-
     // Сервер НЕ ответил
     if (!error.response) {
       error.isNetworkError = true
@@ -81,10 +80,12 @@ instance.interceptors.response.use(
         case 504:
           error.userMessage = 'Ошибка сервера. Попробуйте немного позже.'
           break
-        default:
-          // Берем сообщение от бэкенда, иначе дефолтное
+          
+        default: {
           const backendMsg = error.response.data?.detail || error.response.data?.message || error.response.data?.non_field_errors
           error.userMessage = backendMsg || `Произошла ошибка (код ${status})`
+          break
+        }
       }
     }
 

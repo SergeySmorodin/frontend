@@ -1,41 +1,41 @@
 .registration-form-card {
     max-width: 400px;
-    margin: 0 auto;
+    margin: 80px auto 10px;
   }
   
-  .registration-form-title {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .registration-form-success {
-    color: #28a745;
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    border-radius: 4px;
-  }
-  
-  .registration-form-error {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #af1d29;
-    border-radius: 4px;
-    white-space: pre-line;
-  }
-  
-  .registration-form-error strong {
-    /* display: block; */
-    margin-bottom: 5px;
-  }
-  
-  .registration-form-submit {
-    width: 100%;
-    margin-top: 15px;
-  }
-  
-  .registration-form-submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+.registration-form-title {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.registration-form-success {
+  color: #28a745;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+}
+
+.registration-form-error {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #af1d29;
+  border-radius: 4px;
+  white-space: pre-line;
+}
+
+.registration-form-error strong {
+  /* display: block; */
+  margin-bottom: 5px;
+}
+
+.registration-form-submit {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.registration-form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
