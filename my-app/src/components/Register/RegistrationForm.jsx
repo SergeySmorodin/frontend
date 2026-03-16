@@ -5,7 +5,6 @@ const RegistrationForm = ({
   onSubmit, 
   children, 
   title, 
-  error, 
   successMessage,
   submitText = 'Отправить',
   submitClassName = 'btn-success',
@@ -18,12 +17,6 @@ const RegistrationForm = ({
       {successMessage && (
         <div className="registration-form-success">
           {successMessage}
-        </div>
-      )}
-
-      {error && (
-        <div className="registration-form-error">
-          <strong>Ошибка:</strong> {error}
         </div>
       )}
 

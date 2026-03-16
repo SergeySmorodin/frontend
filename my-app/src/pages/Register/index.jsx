@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { validateRegistrationForm, validateField } from '../../utils/validation'
 import RegistrationForm from '../../components/Register/RegistrationForm'
 import InputField from '../../components/common/InputField'
+import ErrorMessage from '../../components/common/ErrorMessage'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -74,10 +75,18 @@ const Register = () => {
 
   return (
     <>
+      {serverError && (
+        <ErrorMessage 
+          message={serverError} 
+          onDismiss={() => setServerError('')}
+          autoHide={false}
+        />
+      )}
+
       <RegistrationForm
         onSubmit={handleSubmit}
         title="Регистрация"
-        error={serverError}
+        error={null}
         submitText="Зарегистрироваться"
         loading={loading}
       >

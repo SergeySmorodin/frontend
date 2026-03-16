@@ -17,19 +17,6 @@
   border-radius: 4px;
 }
 
-.registration-form-error {
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: #97000d;
-  border-radius: 4px;
-  white-space: pre-line;
-}
-
-.registration-form-error strong {
-  /* display: block; */
-  margin-bottom: 5px;
-}
-
 .registration-form-submit {
   width: 100%;
   margin-top: 15px;

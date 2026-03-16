@@ -3,8 +3,8 @@ import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import RegistrationForm from '../../components/Register/RegistrationForm'
 import InputField from '../../components/common/InputField'
+import ErrorMessage from '../../components/common/ErrorMessage'
 import './Login.css'
-
 
 const Login = () => {
   const navigate = useNavigate()
@@ -37,11 +37,9 @@ const Login = () => {
       if (result.success) {
         navigate('/')
       } else {
-        // Если контекст возвращает объект с ошибкой
         setError(result.error) 
       }
     } catch (err) {
-      // Если login выбрасывает ошибку напрямую
       setError(err.userMessage || 'Произошла неизвестная ошибка')
     } finally {
       setLoading(false)
@@ -50,10 +48,18 @@ const Login = () => {
 
   return (
     <>
+      {error && (
+        <ErrorMessage 
+          message={error} 
+          onDismiss={() => setError('')}
+          autoHide={false}
+        />
+      )}
+
       <RegistrationForm
         onSubmit={handleSubmit}
         title="Вход в систему"
-        error={error}
+        error={null}
         successMessage={successMessage}
         submitText="Войти"
         submitClassName="btn"
